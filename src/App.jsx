@@ -1,14 +1,21 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
 import ContactList from './components/ContactList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
 import styles from './App.module.css';
 import { selectContacts as selectAllContacts } from './redux/contactsSlice';
 import { selectNameFilter as selectCurrentNameFilter } from './redux/filtersSlice';
+import { fetchContacts } from './redux/contactsOps';
 
 function App() {
+  const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
   const filter = useSelector(selectCurrentNameFilter);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const getVisibleContactsCount = () => {
     const normalizedFilter = filter.toLowerCase();
